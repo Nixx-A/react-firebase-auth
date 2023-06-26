@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
-import { Props } from "../Types";
+import { ChildrenProp, ContextProps } from "../Types";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -15,7 +15,7 @@ export const useAuth = () => {
   return context
 }
 
-export function AuthProvider ({ children }: Props) {
+export function AuthProvider ({ children }: ChildrenProp) {
   const [user, setUser] = useState<unknown | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -46,10 +46,12 @@ export function AuthProvider ({ children }: Props) {
     })
     return () => unsuscribe()
   }, [])
+  
 
+  const value: ContextProps = { signup, login, user, logout, loading, loginWithGoogle, resetPassword }
 
   return (
-    <authContext.Provider value={{ signup, login, user, logout, loading, loginWithGoogle, resetPassword }}>
+    <authContext.Provider value={ value}>
       {children}
     </authContext.Provider>
   )

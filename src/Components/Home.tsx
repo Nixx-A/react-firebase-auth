@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAuth } from "../Context/authContext"
+import { ContextProps } from "../Types";
 
 
 export function Home () {
-  const { user, logout, loading } = useAuth()
-  console.log(user);
-
+  const { user, logout, loading }: ContextProps = useAuth()
+  if (!user || !logout || loading) return <p>Error</p>
   const handleLogout = async () => {
     try {
       await logout()
@@ -13,7 +14,6 @@ export function Home () {
 
     }
   }
-
   if (loading) return <h1>Loading...</h1>
 
   return (

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useAuth } from "../Context/authContext";
-import { Target } from "../Types";
+import { ContextProps, Target } from "../Types";
 import { useNavigate } from "react-router-dom";
 import Alert from "./Alert";
 
 export function Register () {
-  const { signup } = useAuth()
+  const { signup }: ContextProps = useAuth()
   const navigate = useNavigate()
 
   const [error, seterror] = useState('')
@@ -15,6 +15,8 @@ export function Register () {
     password: ''
   })
 
+  if(!signup) return <p>Error</p>
+  
   const handleChange = ({ target: { name, value } }: Target) => {
     setuser({ ...user, [name]: value })
   }

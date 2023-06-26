@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useAuth } from "../Context/authContext";
-import { Target } from "../Types";
+import { ContextProps, Target } from "../Types";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "./Alert";
 
 export function Login () {
-  const { login, loginWithGoogle, resetPassword } = useAuth()
+  const { login, loginWithGoogle, resetPassword }: ContextProps = useAuth()
   const navigate = useNavigate()
 
   const [error, seterror] = useState('')
@@ -15,6 +15,7 @@ export function Login () {
     password: ''
   })
 
+  if (!login || !loginWithGoogle || !resetPassword) return <p>Internal error</p>
   const handleChange = ({ target: { name, value } }: Target) => {
     setuser({ ...user, [name]: value })
   }
@@ -41,11 +42,11 @@ export function Login () {
   }
 
   const handleResetPassword = async () => {
-    if(!user.email) return seterror('Please enter your email')
+    if (!user.email) return seterror('Please enter your email')
     try {
       await resetPassword(user.email)
       seterror('We sent you an email with the link to reset your password')
-    } catch(e) {
+    } catch (e: any) {
       throw new Error(e)
     }
   }
